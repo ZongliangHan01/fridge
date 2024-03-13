@@ -6,14 +6,14 @@ import { Router } from 'express'
 
 const router = Router();
 
-router.get("/", fridgeController.getAllItems);
+router.get("/:uid", fridgeController.getAllItems);
 
-router.get("/:id", fridgeController.getItem);
+router.get("/:uid/:id", fridgeController.getItem);
 
-router.post("/", fridgeController.addItem);
+router.post("/:uid", fridgeController.addItem);
 
-router.put("/:id", fridgeController.updateItem);
+router.put("/:uid/:id", fridgeController.updateItem);
 
-router.delete("/:id", fridgeController.deleteItem);
+router.delete("/:uid/:id", fridgeController.deleteItem);
 
 export default router;

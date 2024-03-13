@@ -1,14 +1,39 @@
 // const { getAuth, createUserWithEmailAndPassword } =require( "firebase/auth");
 import { auth, db } from "../../configs/firebaseConfig.js";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {doc, setDoc} from "firebase/firestore";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+import User from "../models/User.js";
 
-const register = (req, res) => {
-//   console.log(req.body);
-      createUserWithEmailAndPassword(auth, req.body.email, req.body.password)
-      .then((userCredential) => {
-      // Signed up
-      const user = userCredential.user;
+const register = async (req, res) => {
+    //   console.log(req.body);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, req.body.email, req.body.password)
+      const userId = userCredential.user.uid;
+      const user = {
+        email: req.body.email,
+        name: req.body.name,
+      };
+      // const user = new User(req.body.email, req.body.name);
+      await setDoc(doc(db, 'users', userId), user);
       res.send("register user!");
+    } catch (error) {
+      console.log(error.message);
+    }
+    
+};
+
+const signIn = async (req, res) => {
+  signInWithEmailAndPassword(auth, req.body.email, req.body.password)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      res.send("sign in user!");
+      // res.send(user);
+      // ...
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -17,12 +42,29 @@ const register = (req, res) => {
     });
 };
 
-const signIn = async (req, res) => {
-  res.send("sign in user!");
+const signOut = async (req, res) => {
+    signOut(auth)
+    .then(() => {
+      res.send("sign out user!");
+    })
+    .catch((error) => {
+      res.send(error.message);
+    });
 };
 
-const signOut = async (req, res) => {
-  res.send("sign out user!");
+const getCurrUser = async (req, res) => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/auth.user
+      const uid = user.uid;
+      res.send(uid);
+      // ...
+    } else {
+      // User is signed out
+      // ...
+    }
+  });
 };
 
 const getProfile = async (req, res) => {
@@ -39,4 +81,5 @@ export default {
   signOut,
   getProfile,
   updateProfile,
+  getCurrUser,
 };
