@@ -8,6 +8,10 @@ const router = Router();
 
 router.get("/:uid", fridgeController.getAllItems);
 
+router.get("/:uid/freezer", fridgeController.getFreezerItems);
+
+router.get("/:uid/cooler", fridgeController.getCoolerItems);
+
 router.get("/:uid/:id", fridgeController.getItem);
 
 router.post("/:uid", fridgeController.addItem);

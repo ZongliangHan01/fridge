@@ -1,6 +1,6 @@
 import { auth, db } from "../../configs/firebaseConfig.js";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import {doc, setDoc, getDoc, getDocs, query, where, collection} from "firebase/firestore";
+import {doc, setDoc, getDoc, getDocs, query, where, collection, updateDoc, deleteDoc} from "firebase/firestore";
 
 const generateRandomString = (length) => {
     let result = "";
@@ -20,11 +20,15 @@ const getAllItems = async (req, res) => {
         if (user.uid == req.params.uid) {
             const q = query(collection(db, "items"), where("owner", "==", user.uid));
             const querySnapshot = await getDocs(q);
+            const items = [];
             querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
-                console.log(doc.id, " => ", doc.data());
+                items.push({
+                    id: doc.id,
+                    data: doc.data()
+                });
             });
-            res.send(querySnapshot);
+            res.send(items);
         }
         
     } catch (error) {
@@ -51,6 +55,52 @@ const getItem = async (req, res) => {
         console.log(error.message);
     }
     
+}
+
+const getFreezerItems = async (req, res) => {
+    try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        if (user.uid == req.params.uid) {
+            const q = query(collection(db, "items"), where("owner", "==", user.uid), where("location", "==", "freezer"));
+            const querySnapshot = await getDocs(q);
+            const items = [];
+            querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+                items.push({
+                    id: doc.id,
+                    data: doc.data()
+                });
+            });
+            res.send(items);
+        }
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const getCoolerItems = async (req, res) => {
+    try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        if (user.uid == req.params.uid) {
+            const q = query(collection(db, "items"), where("owner", "==", user.uid), where("location", "==", "cooler"));
+            const querySnapshot = await getDocs(q);
+            const items = [];
+            querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+                items.push({
+                    id: doc.id,
+                    data: doc.data()
+                });
+            });
+            res.send(items);
+        }
+        
+    } catch (error) {
+        console.log(error.message);
+    }
 }
 
 const addItem = async (req, res) => {
@@ -87,11 +137,39 @@ const addItem = async (req, res) => {
 }
 
 const updateItem = async (req, res) => {
-    res.send("update a item!");
+    try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        if  (user.uid == req.params.uid) {
+            const itemRef = doc(db, "items", req.params.id);
+            await updateDoc(itemRef, {
+                quantity: req.body.quantity,
+                location: req.body.location
+            })
+        }
+        res.send("update a item!");
+    } catch (error) {
+        console.log(error.message);
+    }
+    
 }
 
 const deleteItem = async (req, res) => {
-    res.send("delete a item!");
+    try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        if (user.uid == req.params.uid) {
+            const itemRef = doc(db, "items", req.params.id);
+            await deleteDoc(itemRef);
+            res.send("delete a item!");
+        } else {
+            res.send("user not found");
+        }
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+    
 }
 
 export default {
@@ -99,5 +177,7 @@ export default {
     getItem,
     addItem,
     updateItem,
-    deleteItem
+    deleteItem, 
+    getFreezerItems,
+    getCoolerItems
 }
