@@ -1,0 +1,17 @@
+.item-container {
+    display: flex;
+    flex-direction: horizontal;
+    justify-content: space-around;
+    width: 90%;
+    padding: 10px;
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    height: 50px;
+    border-radius: 10px;
+    background-color: #388BFF;
+    color: white;
+}
+
+.item-container:hover {
+    background-color: #0C66E4;
+}

@@ -10,7 +10,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: stretch;
-    background-color: #79b5f0;
+    background-color: #1D7AFC;
     font-size: 2.5rem;
     align-items: center;
     color: rgb(6, 1, 23);
@@ -47,14 +47,14 @@ body {
 
 
 .nav li.active {
-    background-color: rgb(15, 69, 131);
+    background-color: #09326C;
     border-radius: 1rem;
     color: white;
     font-size: 2rem;
 }
 
 .nav li:hover {
-    background-color: rgb(35, 119, 214);
+    background-color: #85B8FF;
     border-radius: 1rem;
     height: 120%;
 }

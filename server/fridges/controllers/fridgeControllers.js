@@ -15,10 +15,11 @@ const generateRandomString = (length) => {
 
 const getAllItems = async (req, res) => {
     try {
-        const auth = getAuth();
-        const user = auth.currentUser;
-        if (user.uid == req.params.uid) {
-            const q = query(collection(db, "items"), where("owner", "==", user.uid));
+        //const auth = getAuth();
+        //const user = auth.currentUser;
+        //if (user.uid == req.params.uid) {
+        if (true) {
+            const q = query(collection(db, "items"), where("owner", "==", req.params.uid));
             const querySnapshot = await getDocs(q);
             const items = [];
             querySnapshot.forEach((doc) => {
