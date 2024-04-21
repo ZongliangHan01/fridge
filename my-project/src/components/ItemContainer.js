@@ -25,14 +25,14 @@ const ItemContainer = ({type, name, quantity, date }) => {
     }
 
     return (
-        <div className="item-container">
-            <div className="item-name">{name}</div>
-            <div className="item-quantity">{quantity}</div>
+        <div className="flex flex-row pl-2 bg-blue-300 mb-10 py-3  mx-8 rounded-lg">
+            <div className="w-1/4">{name}</div>
+            <div className="w-1/4">{quantity}</div>
             {
                 type === 'cooler' ? 
-                    <div className="item-cooler"> Expire In {dayBefExp(date)} days</div> 
+                    <div className="w-1/2"> Expire In {dayBefExp(date)} days</div> 
                 :   
-                    <div className="item-freezer">{daySinceBuy(date)} days before</div>
+                    <div className="w-1/2">{daySinceBuy(date)} days before</div>
             }
             
         </div>

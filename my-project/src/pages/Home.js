@@ -1,21 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Container from '../components/Container';
 import Button from '@mui/material/Button';
-// import Modal from '../components/Modal';
+import Modal from '../components/Modal';
+
 // import '../styles/home.css';
 const Home = () => {
+    const [openModal, setOpenModal] = useState(false);
+    
 
     return (
-        <div className='page'>
+        <div className='flex flex-col'>
             
-            <div className='home flex-row min-h-screen'>
+            <div className='flex flex-row h-screen'>
               
                 <Container type='cooler'/>
                 <Container type='freezer'/>
                 
             </div>
-            <Button className='button' variant="contained" color="primary">Add</Button>
-            {/* <Modal/> */}
+            <div className='flex flex-row justify-center'>
+                <Button className='top-[-20vh]' 
+                        variant="contained" 
+                        color="primary"
+                        onClick={() => setOpenModal(true)}
+                >
+                    Add
+                </Button>
+            </div>
+
+            <div className='flex flex-row justify-center top-[-20vh]'>
+                {openModal && <Modal onClose={()=>{setOpenModal(false)}}/> }  
+            </div>
+            
         </div>
     );
 }
