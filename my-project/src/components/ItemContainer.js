@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/itemcontainer.css";
+// import "../styles/itemcontainer.css";
 
 const ItemContainer = ({type, name, quantity, date }) => {
 

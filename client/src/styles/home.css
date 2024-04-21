@@ -1,7 +1,29 @@
+.button {
+    position: fixed;
+    bottom: 30vh; 
+    left: 46.5%; 
+    /* z-index: 1;  */
+    width: 50px;
+    /* transform: translate(-50%, -50%); */
+}
+
 .home {
     display: flex;
     flex-direction: horizontal;
     align-items: center;
     justify-content: center;
     height: 100vh;
+    top: 0;
+    position: relative;
+    /* z-index: 5; */
 }
+
+.page {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    height: 100vh;
+    overflow: hidden;
+}
+
+
