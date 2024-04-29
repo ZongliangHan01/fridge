@@ -18,12 +18,12 @@ const Home = () => {
                 
             </div>
             <div className='flex flex-row justify-center'>
-                <Button className='top-[-20vh]' 
+                <Button className='top-[-20vh]  w-20 h-10' 
                         variant="contained" 
                         color="primary"
                         onClick={() => setOpenModal(true)}
                 >
-                    Add
+                    add
                 </Button>
             </div>
 
