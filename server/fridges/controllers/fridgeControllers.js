@@ -106,22 +106,23 @@ const getCoolerItems = async (req, res) => {
 
 const addItem = async (req, res) => {
     try {
-        const auth = getAuth();
-        const user = auth.currentUser;
+        // const auth = getAuth();
+        // const user = auth.currentUser;
         const itemId = generateRandomString(20);
         // if (user) {
         //     res.send(user.uid);
         // }
-        console.log(user.uid);
-        console.log(req.params.uid);
-        console.log(user.uid === req.params.uid);
-        if (user.uid == req.params.uid) {
+        // console.log(user.uid);
+        // console.log(req.params.uid);
+        // console.log(user.uid === req.params.uid);
+        // if (user.uid == req.params.uid) {
+        if (true) {
             const item ={
                 name: req.body.name,
                 quantity: req.body.quantity,
                 expiration: req.body.expiration,
                 buyDate: req.body.buyDate,
-                owner: user.uid,
+                owner: req.params.uid,
                 location: req.body.location
             }
 

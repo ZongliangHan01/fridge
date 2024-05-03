@@ -27,59 +27,16 @@ const Container = ({type}) => {
     // }
 
     useEffect(() => {
-        // setLoading(true);
-        // console.log("useEffect");
-        // api.get(
-        //     '/JAiqbZsHi8dVdpmr0KWnIee4UHL2')
-        //     .then((response) => {
-        //         setItems(response.data);
-        //         setLoading(false);
-        //     }
+        setLoading(true);
+        console.log("useEffect");
+        api.get(
+            '/JAiqbZsHi8dVdpmr0KWnIee4UHL2')
+            .then((response) => {
+                setItems(response.data);
+                setLoading(false);
+            }
             
-        // );
-        setItems([
-            {
-                id: 1,
-                data: {
-                    name: 'Milk',
-                    quantity: 1,
-                    expiration: '12/12/2021',
-                    location: 'cooler'
-                }
-            },
-            {
-                id: 2,
-                data: {
-                    name: 'Ice Cream',
-                    quantity: 1,
-                    expiration: '12/12/2021',
-                    buyDate: '12/12/2021',
-                    location: 'freezer'
-                }
-            },
-            {
-                id: 3,
-                data: {
-                    name: 'Apple',
-                    quantity: 1,
-                    expiration: '12/12/2021',
-                    buyDate: '12/12/2021',
-                    location: 'cooler'
-                }
-            },
-            {
-                id: 4,
-                data: {
-                    name: 'Roti',
-                    quantity: 1,
-                    expiration: '12/12/2021',
-                    buyDate: '12/12/2021',
-                    location: 'freezer'
-                }
-            },
-        ]);
-        
-        
+        );
          
         
     }, []);

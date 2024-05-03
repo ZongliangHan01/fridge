@@ -1,16 +1,17 @@
-import React from "react";
-import { useState, useRef } from "react";
+import React, { useEffect } from "react";
+import { useRef } from "react";
 import { useForm } from "react-hook-form";
-import { Form } from "react-router-dom";
 import Button from "@mui/material/Button";
+import api from '../api/apiConfig';
 import CircularProgress from '@mui/material/CircularProgress';
 
 const Modal = ({ onClose }) => {
   const {
     register,
     handleSubmit,
+    reset,
     setError,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm({
     defaultValues: {
         // name: "",
@@ -29,9 +30,20 @@ const Modal = ({ onClose }) => {
 
   const onSubmit = async (data) => {
     try {
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        console.log(data);
-        throw new Error();
+      api.post(
+        '/JAiqbZsHi8dVdpmr0KWnIee4UHL2', {
+            name: data.name,
+            quantity: data.quantity,
+            buyDate: data.buyDate,
+            expiration: data.expiration,
+            location: data.location          
+        })
+        .then(() => {
+            console.log("Item added");
+        }
+        
+    );
+  
     } catch (error) {
         setError("root", {
             message: "Something went wrong. Please try again later"
@@ -39,6 +51,21 @@ const Modal = ({ onClose }) => {
     }
     
   };
+
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({
+        name: "",
+        quantity: "",
+        buyDate:  new Date().getDate() + "/" + (new Date().getMonth()+1)+ "/" + new Date().getFullYear(),
+        expiration: "",
+        location: "cooler",
+      });
+    }
+    
+  
+  }, [reset, isSubmitSuccessful])
 
   return (
     <div
