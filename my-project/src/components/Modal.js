@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import api from '../api/apiConfig';
 import CircularProgress from '@mui/material/CircularProgress';
 
-const Modal = ({ onClose }) => {
+const Modal = ({ onClose, onAddItem }) => {
   const {
     register,
     handleSubmit,
@@ -39,6 +39,7 @@ const Modal = ({ onClose }) => {
             location: data.location          
         })
         .then(() => {
+            onAddItem();
             console.log("Item added");
         }
         

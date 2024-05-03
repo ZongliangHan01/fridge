@@ -4,14 +4,21 @@ import {useState, useEffect} from 'react';
 import ItemContainer from "./ItemContainer";
 // import "../styles/container.css";
 
-const Container = ({type}) => {
-    const [items, setItems] = useState([]);
-    const [loading, setLoading] = useState(false);
+const Container = ({type, items}) => {
+    // const [items, setItems] = useState([]);
+    // const [loading, setLoading] = useState(false);
     
-    // const getItems = async () => {
-    //     console.log("getItems");
-    //     // setItems([]);
-    //     const response = await api.get(
+    
+
+    // const handleAddItem = (newItem) => {
+    //     // Update data state with new data
+    //     setItems([...items, newItem]);
+    //   };
+
+    // useEffect(() => {
+    //     setLoading(true);
+    //     console.log("useEffect");
+    //     api.get(
     //         '/JAiqbZsHi8dVdpmr0KWnIee4UHL2')
     //         .then((response) => {
     //             setItems(response.data);
@@ -19,31 +26,13 @@ const Container = ({type}) => {
     //         }
             
     //     );
-        
-    //     for (let i = 0; i < items.length; i++) {
-    //         console.log(items[i].data.name);
-    //     }
-        
-    // }
-
-    useEffect(() => {
-        setLoading(true);
-        console.log("useEffect");
-        api.get(
-            '/JAiqbZsHi8dVdpmr0KWnIee4UHL2')
-            .then((response) => {
-                setItems(response.data);
-                setLoading(false);
-            }
-            
-        );
          
         
-    }, []);
+    // }, []);
     
-    if (loading) {
-        return <div>Loading...</div>
-    }
+    // if (loading) {
+    //     return <div>Loading...</div>
+    // }
 
     return (
         <div className="mt-20 border w-1/2 overflow-scroll overscroll-none ">
