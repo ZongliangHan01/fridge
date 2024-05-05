@@ -1,70 +1,77 @@
-import React, { useState, useEffect } from 'react';
-import Container from '../components/Container';
-import Button from '@mui/material/Button';
-import Modal from '../components/Modal';
-import api from '../api/apiConfig';
-
+import React, { useState } from "react";
+import Container from "../components/Container";
+import Button from "@mui/material/Button";
+import Modal from "../components/Modal";
 
 // import '../styles/home.css';
 const Home = () => {
-    const [openModal, setOpenModal] = useState(false);
-    
-    const [items, setItems] = useState([]);
-    const [loading, setLoading] = useState(false);
-    
-    const [numItems, setNumItems] = useState(items.length);
+  const [openModal, setOpenModal] = useState(false);
+  const [isRefresh, setIsRefresh] = useState(true);
+  const [ModalType, setModalType] = useState("add");
+  const [selectedItem, setSelectedItem] = useState({});
 
-    const handleAddItem = () => {
-        // Update data state with new data
-        setNumItems(numItems + 1);
-      };
+  const setRefresh = (status) => {
+    setIsRefresh(status);
+  };
 
-    useEffect(() => {
-        setLoading(true);
-        console.log("useEffect");
-        api.get(
-            '/JAiqbZsHi8dVdpmr0KWnIee4UHL2')
-            .then((response) => {
-                setItems(response.data);
-                console.log(response.data[0].data.location);
-                setLoading(false);
-            }
-            
-        );
-         
-        
-    }, [numItems]);
-    
-    if (loading) {
-        return <div>Loading...</div>
-    }
+  const setOpen = (status) => {
+    setOpenModal(status);
+  };
 
+  const setType = (type) => {
+    setModalType(type);
+  };
 
-    return (
-        <div className='flex flex-col'>
-            
-            <div className='flex flex-row h-screen'>
-              
-                <Container type='cooler' items={items}/>
-                <Container type='freezer' items={items}/>
-                
-            </div>
-            <div className='flex flex-row justify-center'>
-                <Button className='top-[-20vh]  w-20 h-10' 
-                        variant="contained" 
-                        color="primary"
-                        onClick={() => setOpenModal(true)}
-                >
-                    add
-                </Button>
-            </div>
+  const setSelected = (item) => {
+    setSelectedItem(item);
+  };
 
-            <div className='flex flex-row justify-center top-[-20vh]'>
-                {openModal && <Modal onClose={()=>{setOpenModal(false)}} onAddItem={()=>{handleAddItem()}}/> }  
-            </div>
-            
-        </div>
-    );
-}
+  return (
+    <div className="flex flex-col">
+      <div className="flex flex-row h-screen">
+        <Container
+          type="cooler"
+          isRefresh={isRefresh}
+          setRefresh={setRefresh}
+          setOpen={setOpen}
+          setType={setType}
+          setSelected={setSelected}
+        />
+        <Container
+          type="freezer"
+          isRefresh={isRefresh}
+          setRefresh={setRefresh}
+          setOpen={setOpen}
+          setType={setType}
+          setSelected={setSelected}
+        />
+      </div>
+      <div className="flex flex-row justify-center">
+        <Button
+          className="top-[-20vh]  w-20 h-10"
+          variant="contained"
+          color="primary"
+          onClick={() => setOpenModal(true)}
+        >
+          add
+        </Button>
+      </div>
+
+      <div className="flex flex-row justify-center top-[-20vh]">
+        {openModal && (
+          <Modal
+            onClose={() => {
+              setOpenModal(false);
+            }}
+            setRefresh={setRefresh}
+            type={ModalType}
+            setType={setType}
+            selectedItem={selectedItem}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default Home;

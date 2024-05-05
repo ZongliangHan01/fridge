@@ -140,9 +140,10 @@ const addItem = async (req, res) => {
 
 const updateItem = async (req, res) => {
     try {
-        const auth = getAuth();
-        const user = auth.currentUser;
-        if  (user.uid == req.params.uid) {
+        // const auth = getAuth();
+        // const user = auth.currentUser;
+        // if  (user.uid == req.params.uid) {
+        if (true) {
             const itemRef = doc(db, "items", req.params.id);
             await updateDoc(itemRef, {
                 quantity: req.body.quantity,
@@ -158,9 +159,10 @@ const updateItem = async (req, res) => {
 
 const deleteItem = async (req, res) => {
     try {
-        const auth = getAuth();
-        const user = auth.currentUser;
-        if (user.uid == req.params.uid) {
+        // const auth = getAuth();
+        // const user = auth.currentUser;
+        // if (user.uid == req.params.uid) {
+        if (true) {
             const itemRef = doc(db, "items", req.params.id);
             await deleteDoc(itemRef);
             res.send("delete a item!");
