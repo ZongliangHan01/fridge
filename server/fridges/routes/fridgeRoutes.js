@@ -20,4 +20,4 @@ router.put("/:uid/:id", fridgeController.updateItem);
 
 router.delete("/:uid/:id", fridgeController.deleteItem);
 
-export default router;
+export default router; 

@@ -21,6 +21,7 @@ const register = async (req, res) => {
       await setDoc(doc(db, 'users', userId), user);
       res.send("register user!");
     } catch (error) {
+      res.status(500).send(error.message);
       console.log(error.message);
     }
     
