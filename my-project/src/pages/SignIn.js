@@ -1,24 +1,40 @@
 import React from "react";
 import { useState } from "react";
 import api from "../api/apiConfig";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../components/AuthProvider";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+  const { setAuth, setUid } = useAuth();
 
   const handleSubmit = (e) => {
+    
     e.preventDefault();
     api.post("/account/signin", {
       email: email,
       password: password,
     })
     .then((res) => {
-      if (res.data === "sign in user!") {
+      if (res.status === 200) {
         console.log(res.data);
+        sessionStorage.setItem("uid", res.data);
+        sessionStorage.setItem("auth", true);
+        setUid(res.data);
+        setAuth(true);
+        navigate("/");
       }
-      
+     
     })
+    .catch((error) => {
+      console.error(error.response.data);
+      setError(true);
+      setErrorMessage(error.response.data);
+    });
     console.log(email + " " + password);
   };
 
@@ -46,7 +62,7 @@ const SignIn = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="w-[350px] h-14 rounded-lg"
             />
-
+            {error && <div className="text-red-500 text-sm ">{errorMessage}</div>}
             <button
               type="submit"
               className="bg-blue-500 hover:bg-blue-600 rounded-full w-[200px] h-[50px]"

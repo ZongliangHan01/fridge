@@ -2,18 +2,18 @@ import React from "react";
 import api from '../api/apiConfig';
 import {useState, useEffect} from 'react';
 import ItemContainer from "./ItemContainer";
+import { useAuth } from "./AuthProvider";
 // import "../styles/container.css";
 
 const Container = ({type, isRefresh, setRefresh, setOpen, setType, setSelected}) => {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(false);
-
+    const {uid} = useAuth();
     useEffect(() => {
         if (isRefresh) {
             setLoading(true);
-            console.log("useEffect");
             api.get(
-                '/JAiqbZsHi8dVdpmr0KWnIee4UHL2')
+                `/fridge/${uid}`)
                 .then((response) => {
                     setItems(response.data);
                     setLoading(false);

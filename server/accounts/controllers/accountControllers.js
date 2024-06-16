@@ -1,30 +1,43 @@
 // const { getAuth, createUserWithEmailAndPassword } =require( "firebase/auth");
 import { auth, db } from "../../configs/firebaseConfig.js";
-import {doc, setDoc} from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+  collection,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
-import User from "../models/User.js";
 
 const register = async (req, res) => {
-    //   console.log(req.body);
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, req.body.email, req.body.password)
-      const userId = userCredential.user.uid;
-      const user = {
-        email: req.body.email,
-        name: req.body.name,
-      };
-      // const user = new User(req.body.email, req.body.name);
-      await setDoc(doc(db, 'users', userId), user);
-      res.send("register user!");
-    } catch (error) {
-      res.status(500).send(error.message);
-      console.log(error.message);
-    }
-    
+  //   console.log(req.body);
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      req.body.email,
+      req.body.password
+    );
+    const userId = userCredential.user.uid;
+    const user = {
+      email: req.body.email,
+      name: req.body.name,
+    };
+    // const user = new User(req.body.email, req.body.name);
+    await setDoc(doc(db, "users", userId), user);
+    res.send("register user!");
+  } catch (error) {
+    res.status(500).send(error.message);
+    console.log(error.message);
+  }
 };
 
 const signIn = async (req, res) => {
@@ -32,32 +45,30 @@ const signIn = async (req, res) => {
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
-      res.send("sign in user!");
+      res.status(200).send(user.uid);
       // res.send(user);
       // ...
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      res.send(errorMessage);
+      res.status(500).send(errorMessage);
     });
 };
 
-const signOut = async (req, res) => {
-    signOut(auth)
+const logOut = async (req, res) => {
+  signOut(auth)
     .then(() => {
-      res.send("sign out user!");
+      res.send("sign out!");
     })
     .catch((error) => {
-      res.send(error.message);
+      res.status(500).send(error.message);
     });
 };
 
 const getCurrUser = async (req, res) => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/auth.user
       const uid = user.uid;
       res.send(uid);
       // ...
@@ -66,20 +77,40 @@ const getCurrUser = async (req, res) => {
       // ...
     }
   });
+  console.log("get current user!");
 };
 
 const getProfile = async (req, res) => {
-  res.send("get user profile!");
+  const user = auth.currentUser;
+  if (user) {
+    try {
+      const uid = user.uid;
+      const userDocRef = doc(db, "users", uid);
+      const userDoc = await getDoc(userDocRef);
+      
+      if (userDoc.exists()) {
+        res.status(200).json(userDoc.data());
+      } else {
+        res.status(404).send("User not found");
+      }
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  }
+  console.log("get current user!");
+
+  // res.send("get profile!");
 };
 
-const updateProfile = async (req, res) => {
-  res.send("update user profile!");
+const updateProfile = (req, res) => {
+  console.log("update user profile!");
+  // res.status(200).send("update user profile!");
 };
 
 export default {
   register,
   signIn,
-  signOut,
+  logOut,
   getProfile,
   updateProfile,
   getCurrUser,

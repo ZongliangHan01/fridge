@@ -3,8 +3,10 @@ import { useForm } from "react-hook-form";
 import Button from "@mui/material/Button";
 import api from '../api/apiConfig';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useAuth } from "./AuthProvider";
 
 const UpdateModal = ({setRefresh, setType, selectedItem, onClose}) => {
+  const {uid} = useAuth();
   const {
     register,
     handleSubmit,
@@ -24,7 +26,7 @@ const UpdateModal = ({setRefresh, setType, selectedItem, onClose}) => {
   const onSubmit = async (data) => {
     try {
       api.put(
-        '/JAiqbZsHi8dVdpmr0KWnIee4UHL2/'+selectedItem.id, {
+        `/fridge/${uid}/`+selectedItem.id, {
             name: data.name,
             quantity: data.quantity,
             buyDate: data.buyDate,

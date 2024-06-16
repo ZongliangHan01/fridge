@@ -11,10 +11,6 @@ const app = express();
 const port = 3000;
 app.use(cors());
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
-
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -22,5 +18,10 @@ app.use(
   }),
 );
 
-app.use("/", fridgeRouter);
+
+app.use("/fridge", fridgeRouter);
 app.use("/account", accountRouter);
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});

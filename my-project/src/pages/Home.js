@@ -3,6 +3,8 @@ import Container from "../components/Container";
 import Button from "@mui/material/Button";
 import Modal from "../components/Modal";
 
+
+
 // import '../styles/home.css';
 const Home = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -25,6 +27,8 @@ const Home = () => {
   const setSelected = (item) => {
     setSelectedItem(item);
   };
+
+  
 
   return (
     <div className="flex flex-col">

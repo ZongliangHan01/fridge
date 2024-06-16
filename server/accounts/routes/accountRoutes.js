@@ -1,13 +1,14 @@
 import accountController from "../controllers/accountControllers.js";
-import { Router } from 'express'
+import { Router } from "express";
 
 const router = Router();
 
+router.get("/update", accountController.updateProfile);
+router.get("/user", accountController.getCurrUser);
+router.get("/profile", accountController.getProfile);
 router.post("/register", accountController.register);
 router.post("/signin", accountController.signIn);
-router.post("/signout", accountController.signOut);
-router.get("/user", accountController.getCurrUser);
-router.get("/", accountController.getProfile);
-router.get("/update", accountController.updateProfile);
+router.post("/signout", accountController.logOut);
+
 
 export default router;

@@ -15,10 +15,10 @@ const generateRandomString = (length) => {
 
 const getAllItems = async (req, res) => {
     try {
-        //const auth = getAuth();
-        //const user = auth.currentUser;
-        //if (user.uid == req.params.uid) {
-        if (true) {
+        const auth = getAuth();
+        const user = auth.currentUser || {};
+        if (user.uid == req.params.uid) {
+        // if (true) {
             const q = query(collection(db, "items"), where("owner", "==", req.params.uid));
             const querySnapshot = await getDocs(q);
             const items = [];
@@ -106,17 +106,17 @@ const getCoolerItems = async (req, res) => {
 
 const addItem = async (req, res) => {
     try {
-        // const auth = getAuth();
-        // const user = auth.currentUser;
+        const auth = getAuth();
+        const user = auth.currentUser;
         const itemId = generateRandomString(20);
         // if (user) {
-        //     res.send(user.uid);
+            // res.send(user.uid);
         // }
         // console.log(user.uid);
         // console.log(req.params.uid);
         // console.log(user.uid === req.params.uid);
-        // if (user.uid == req.params.uid) {
-        if (true) {
+        if (user.uid == req.params.uid) {
+        // if (true) {
             const item ={
                 name: req.body.name,
                 quantity: req.body.quantity,
@@ -140,10 +140,10 @@ const addItem = async (req, res) => {
 
 const updateItem = async (req, res) => {
     try {
-        // const auth = getAuth();
-        // const user = auth.currentUser;
-        // if  (user.uid == req.params.uid) {
-        if (true) {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        if  (user.uid == req.params.uid) {
+        // if (true) {
             const itemRef = doc(db, "items", req.params.id);
             await updateDoc(itemRef, {
                 quantity: req.body.quantity,
@@ -159,10 +159,10 @@ const updateItem = async (req, res) => {
 
 const deleteItem = async (req, res) => {
     try {
-        // const auth = getAuth();
-        // const user = auth.currentUser;
-        // if (user.uid == req.params.uid) {
-        if (true) {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        if (user.uid == req.params.uid) {
+        // if (true) {
             const itemRef = doc(db, "items", req.params.id);
             await deleteDoc(itemRef);
             res.send("delete a item!");
