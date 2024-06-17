@@ -1,4 +1,4 @@
-// const { getAuth, createUserWithEmailAndPassword } =require( "firebase/auth");
+import redisClient from "../../utils/redisClient.js";
 import { auth, db } from "../../configs/firebaseConfig.js";
 import {
   doc,
@@ -85,17 +85,29 @@ const getProfile = async (req, res) => {
   if (user) {
     try {
       const uid = user.uid;
+      // Check cache
+      const cacheData = await redisClient.get('profile:'+uid);
+      if (cacheData) {
+        return res.status(200).json(JSON.parse(cacheData));
+      }
+
+      // Get data from firestore
       const userDocRef = doc(db, "users", uid);
       const userDoc = await getDoc(userDocRef);
-      
       if (userDoc.exists()) {
         res.status(200).json(userDoc.data());
+        console.log("from firestore!")
+        redisClient.setEx("profile:"+uid, 3600, JSON.stringify(userDoc.data()));
       } else {
-        res.status(404).send("User not found");
+        return res.status(404).send("User not found");
       }
+
+      
     } catch (error) {
-      res.status(500).send(error.message);
+      return res.status(500).send(error.message);
     }
+  } else {
+    return res.status(401).send("User is not signed in!");
   }
   console.log("get current user!");
 

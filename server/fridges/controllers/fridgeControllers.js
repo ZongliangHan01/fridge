@@ -1,6 +1,7 @@
 import { auth, db } from "../../configs/firebaseConfig.js";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {doc, setDoc, getDoc, getDocs, query, where, collection, updateDoc, deleteDoc} from "firebase/firestore";
+import redisClient from "../../utils/redisClient.js";
 
 const generateRandomString = (length) => {
     let result = "";
@@ -19,6 +20,11 @@ const getAllItems = async (req, res) => {
         const user = auth.currentUser || {};
         if (user.uid == req.params.uid) {
         // if (true) {
+            const cacheData = await redisClient.get('fridgeItems:'+user.uid);
+            if (cacheData) {
+                console.log("cache hit");
+                return res.send(JSON.parse(cacheData));
+            }
             const q = query(collection(db, "items"), where("owner", "==", req.params.uid));
             const querySnapshot = await getDocs(q);
             const items = [];
@@ -30,6 +36,7 @@ const getAllItems = async (req, res) => {
                 });
             });
             res.send(items);
+            await redisClient.setEx('fridgeItems:'+user.uid, 3600, JSON.stringify(items));
         }
         
     } catch (error) {
@@ -128,6 +135,8 @@ const addItem = async (req, res) => {
 
             await setDoc(doc(db, "items", itemId), item);
             res.send("add a item!");
+            await redisClient.del('fridgeItems:'+user.uid);
+
         } else {
             res.send("user not found");
         }
@@ -151,6 +160,8 @@ const updateItem = async (req, res) => {
             })
         }
         res.send("update a item!");
+        await redisClient.del('fridgeItems:'+user.uid);
+
     } catch (error) {
         console.log(error.message);
     }
@@ -166,6 +177,7 @@ const deleteItem = async (req, res) => {
             const itemRef = doc(db, "items", req.params.id);
             await deleteDoc(itemRef);
             res.send("delete a item!");
+            await redisClient.del('fridgeItems:'+user.uid);
         } else {
             res.send("user not found");
         }

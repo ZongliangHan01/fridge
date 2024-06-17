@@ -4,7 +4,7 @@ import api from '../api/apiConfig';
 import { useAuth } from '../components/AuthProvider';
 
 const Profile = () => {
-    const { setAuth, setUid, uid } = useAuth();
+    const { setAuth, setUid } = useAuth();
     const [profile, setProfile] = useState([]);
     useEffect(() => {
         console.log("Getting profile")

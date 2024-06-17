@@ -2,6 +2,7 @@ import React from "react";
 // import "../styles/itemcontainer.css";
 import DropDownMenu from "./DropDownMenu";
 import api from "../api/apiConfig";
+import { useAuth } from "./AuthProvider";
 // import { set } from "react-hook-form";
 
 const ItemContainer = ({ item, setRefresh, setOpen, setType, setSelected }) => {
@@ -9,6 +10,7 @@ const ItemContainer = ({ item, setRefresh, setOpen, setType, setSelected }) => {
   //     'Update',
   //     'Delete'
   //   ];
+  const {uid} = useAuth();
   const date =
     item.data.location === "cooler" ? item.data.expiration : item.data.buyDate;
   const convertDate = (date) => {
@@ -33,7 +35,7 @@ const ItemContainer = ({ item, setRefresh, setOpen, setType, setSelected }) => {
   };
 
   const handleDelete = () => {
-    api.delete("/JAiqbZsHi8dVdpmr0KWnIee4UHL2/" + item.id).then(() => {
+    api.delete(`fridge/${uid}/` + item.id).then(() => {
       console.log("Item deleted");
       setRefresh(true);
     });

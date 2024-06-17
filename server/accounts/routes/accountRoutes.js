@@ -1,6 +1,7 @@
 import accountController from "../controllers/accountControllers.js";
 import { Router } from "express";
 
+
 const router = Router();
 
 router.get("/update", accountController.updateProfile);

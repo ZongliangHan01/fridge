@@ -25,7 +25,7 @@ const Container = ({type, isRefresh, setRefresh, setOpen, setType, setSelected})
         
          
         
-    }, [isRefresh, setRefresh]);
+    }, [isRefresh, setRefresh, uid]);
     
     if (loading) {
         return <div>Loading...</div>
